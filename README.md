@@ -1,4 +1,4 @@
-# GEW dispersion script [![DOI](https://zenodo.org/badge/526614500.svg)](https://zenodo.org/badge/latestdoi/526614500)
+# GEW dispersion script [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7010603.svg)](https://doi.org/10.5281/zenodo.7010603)
 
 **Script to compute guided waves in plates.** 
 
@@ -17,6 +17,7 @@ Features:
 For theory on guided waves and spectral collocation refer to:<br/>
 D. A. Kiefer, _Elastodynamic quasi-guided waves for transit-time ultrasonic flow metering_, ser. FAU Forschungen, Reihe B, Medizin, Naturwissenschaft, Technik, vol. 42. Erlangen: FAU University Press, 2022, doi: [10.25593/978-3-96147-550-6](http://doi.org/10.25593/978-3-96147-550-6).
 
+Latest release: [![DOI](https://zenodo.org/badge/526614500.svg)](https://zenodo.org/badge/latestdoi/526614500)
 
 ## How to use
 
