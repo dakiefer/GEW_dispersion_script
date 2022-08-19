@@ -22,7 +22,7 @@ Latest release: [![DOI](https://zenodo.org/badge/526614500.svg)](https://zenodo.
 ## How to use
 
 1. Download [DMSUITE](https://www.mathworks.com/matlabcentral/fileexchange/29-dmsuite) and add it to the Matlab path
-2. Execute `plate_SCM.m`
+2. Execute `plate_SCM.m` in the `GEW_dispersion_script` folder
 3. Enjoy!
 
 ## Dependencies
