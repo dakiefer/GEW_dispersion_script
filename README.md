@@ -1,4 +1,4 @@
-# GEW dispersion script
+# GEW dispersion script [![DOI](https://zenodo.org/badge/526614500.svg)](https://zenodo.org/badge/latestdoi/526614500)
 
 **Script to compute guided waves in plates.** 
 
@@ -20,7 +20,7 @@ D. A. Kiefer, _Elastodynamic quasi-guided waves for transit-time ultrasonic flow
 
 ## How to use
 
-1. Download DMSUITE (https://www.mathworks.com/matlabcentral/fileexchange/29-dmsuite) and add it to the Matlab path
+1. Download [DMSUITE](https://www.mathworks.com/matlabcentral/fileexchange/29-dmsuite) and add it to the Matlab path
 2. Execute `plate_SCM.m`
 3. Enjoy!
 
@@ -34,9 +34,9 @@ J.A.C Weideman (2022). DMSUITE (https://www.mathworks.com/matlabcentral/fileexch
 
 Created 2022 by Daniel A. Kiefer while at Institut Langevin, ESPCI Paris.
 
-If this code is useful to you, please cite as:
+If this code is useful to you, please cite it as:
 
-> Kiefer, D. A. (2022). GEW dispersion script [Computer software]. https://doi.org/TODO
+> Kiefer, D. A. (2022). GEW dispersion script [Computer software]. https://doi.org/10.5281/zenodo.7010603
 
 and also
 
