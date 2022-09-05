@@ -1,5 +1,5 @@
 %% Dispersion calculation in a generally anisotropic elastic plate
-% Depends on the DMSUITE toolbox by Weideman and Reddy: 
+% Depends on DMSUITE's chebdif.m by Weideman and Reddy: 
 % https://mathworks.com/matlabcentral/fileexchange/29-dmsuite
 % 
 % see also:
@@ -8,7 +8,7 @@
 % vol. 42. Erlangen: FAU University Press, 2022, doi: 10.25593/978-3-96147-550-6
 % 
 % 2022 - Daniel A. Kiefer
-% Institut Langevin, Paris, France
+% Institut Langevin, ESPCI Paris, France
 %
 
 h = 1e-3;   % thickness in m
