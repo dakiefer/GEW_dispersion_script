@@ -18,9 +18,8 @@ rho = 7900; lbd = 1.1538e11; mu = 7.6923e10; % steel material parameters
 % define and normalize parameters:
 II = eye(3).*shiftdim(eye(3), -2); % 4th order "unit tensor"
 c = lbd*II + mu*(permute(II, [1 3 4 2]) + permute(II, [1 3 2 4])); % stiffness tensor
-c0 = c(1,2,1,2); h0 = h; % normalization parameters
-rho0 = rho; fh0 = sqrt(c0/rho0); % normalization parameters
-rhon = rho/rho0; cn = c/c0;
+c0 = c(1,2,1,2); rho0 = rho; fh0 = sqrt(c0/rho0);  % normalization parameters
+rhon = rho/rho0; cn = c/c0; % normalize
 
 % relevant material matrices: 
 udof = 1:2; % Lamb [1:2]; SH [3]; coupled [1:3];
@@ -30,8 +29,8 @@ cyx = squeeze(cn(2,udof,udof,1));
 cyy = squeeze(cn(2,udof,udof,2));
 I = eye(size(cxx)); 
 
-%% discretization 
-[~, Dy_dash] = chebdif(N, 2); 
+% discretization 
+[~, Dy_dash] = chebdif(N, 2); % create differentiation matrices
 D1 = -2*Dy_dash(:,:,1); % differentiation on unit domain
 D2 = 4*Dy_dash(:,:,2);  % second order derivative
 Id = eye(size(D1));     % identity matrix for discretization
