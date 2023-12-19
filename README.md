@@ -4,11 +4,14 @@
 
 Extremely fast and robust computation of guided elastodynamic waves (GEWs) in plates. Select between Lamb waves, SH waves or coupled polarization. Easily computes the complex wavenumber dispersion curves. The script implements the spectral collocation method (SCM) based on DMSUITE.
 
+> [!TIP]
+> This is a simple script that should be easy to extend with custom functionality. If you are rather looking for a full system to compute and postprocess guided elastic waves, have a look at [GEWtool](https://github.com/dakiefer/GEWtool).
+
 ![dispersion_fig](https://user-images.githubusercontent.com/3725269/185589376-c991b579-2550-40e8-8d7b-d90de9edec77.png)
 
 Features:
-- does not miss solutions, super fast 
 - only ~50 lines of Matlab code
+- does not miss solutions, super fast 
 - general anisotropy
 - possible to include dissipation
 - Lamb/SH/coupled polarization
@@ -24,8 +27,7 @@ D. A. Kiefer, _Elastodynamic quasi-guided waves for transit-time ultrasonic flad
 ## How to use
 
 1. Change into the `GEW_dispersion_script` folder or add it to the Matlab path.
-2. Execute `plate_SCM.m` .
-3. Enjoy!
+2. Execute `plate_SCM.m` . Enjoy!
 
 ## Dependencies
 
@@ -39,7 +41,7 @@ Created 2022 by Daniel A. Kiefer while at Institut Langevin, ESPCI Paris.
 
 If this code is useful to you, please cite it as:
 
-> Kiefer, D. A. (2022). GEW dispersion script [Computer software]. https://doi.org/10.5281/zenodo.7010603
+> Kiefer, D. A. (2022). GEW dispersion script. https://doi.org/10.5281/zenodo.7010603 (https://github.com/dakiefer/GEW_dispersion_script)
 
 and if appropriate also
 
