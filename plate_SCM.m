@@ -12,7 +12,7 @@
 %
 
 h = 1e-3;   % thickness in m
-N = 20;     % discretization: polynomial order of interpolants
+N = 15;     % discretization: polynomial order of interpolants
 rho = 7900; lbd = 1.1538e11; mu = 7.6923e10; % steel material parameters
 
 % define and normalize parameters:
@@ -22,7 +22,7 @@ c0 = c(1,2,1,2); rho0 = rho; fh0 = sqrt(c0/rho0);  % normalization parameters
 rhon = rho/rho0; cn = c/c0; % normalize
 
 % relevant material matrices: 
-udof = 1:2; % Lamb [1:2]; SH [3]; coupled [1:3];
+udof = 1:3; % Lamb [1:2]; SH [3]; coupled [1:3];
 cxx = squeeze(cn(1,udof,udof,1));
 cxy = squeeze(cn(1,udof,udof,2)); 
 cyx = squeeze(cn(2,udof,udof,1));
@@ -45,19 +45,19 @@ dofBC = [(0:length(udof)-1)*N+1; (1:length(udof))*N]; % [1, N, N+1, 2*N, 2*N+1, 
 L2(dofBC, :) = 0; L1(dofBC, :) = B1; L0(dofBC, :) = B0; M(dofBC, :) = 0;
 
 %% solve for real frequencies:
-kh = linspace(1e-2, 15, 300); % wavenumber*thickness 
-whn = nan(size(M, 2), length(kh)); tic 
+kh = linspace(1e-2, 15, 100).'; % wavenumber*thickness 
+whn = nan(length(kh), size(M, 2)); tic 
 for ii = 1:length(kh)
     kh0 = kh(ii);
     [wh2] = polyeig((1i*kh0)^2*L2 + (1i*kh0)*L1 + L0, M); 
-    whn(:,ii) = sqrt(wh2);
+    whn(ii,:) = sort(sqrt(wh2));
 end
 fh = real(whn/2/pi*fh0); fh(fh == 0) = nan;
 chron = toc; fprintf('nF: %d, nK: %d, elapsed time: %g, time per point: %g. ms\n', size(fh, 1), size(fh, 2), chron, chron/length(fh(:))*1e3);
 
 % plot wavenumbers:
 kkh = kh.*ones(size(fh)); % expand to same size as fh
-figure, plot(kkh(:)/h/1e3, fh(:)/h/1e6, '.');
+figure, plot(kkh/h/1e3, fh/h/1e6, 'k-');
 xlim([0, 12]), ylim([0, 6]),
 xlabel('k in rad/mm'), ylabel('f in MHz'),
 
@@ -70,12 +70,17 @@ for ii = 1:length(fh)
     [un, khi] = polyeig(L0 + whn^2*M, L1, L2); 
     kh(ii, :) = -1i*khi;
 end
-chron = toc; fprintf('nF: %d, nK: %d, elapsed time: %g, time per point: %g. ms\n', size(kh, 1), size(kh, 2), chron, chron/length(kh(:))*1e3);
+chron = toc; fprintf('nF: %d, nK: %d, elapsed time: %g, time per point: %g ms\n', size(kh, 1), size(kh, 2), chron, chron/length(kh(:))*1e3);
 
 % plot wave numbers:
-kh = sort(kh, 2); kh = kh(:, 1:round(1.5*N)); % only smallest magnitude
+kh = sort(kh, 2); kh = kh(:, 1:round(1.6*N)); % only smallest magnitude
 ffh = fh.*ones(size(kh)); % expand to same size as kh
 figure, scatter(real(kh(:))/h/1e3, ffh(:)/h/1e6, 8, abs(imag(kh(:))), 'filled'), 
 caxis([0, 0.12]), xlim([0, 12]), ylim([0, fh(end)/h/1e6])
 xlabel('k in rad/mm'), ylabel('f in MHz')
 
+%% plot 3d: 
+% figure; 
+% plot3(real(kh(:))/h/1e3, imag(kh(:))/h/1e3, ffh(:)/h/1e6, 'k.');
+% xlim([-1, 1]*12), ylim([-1 1]*12), zlim([0, fh(end)/h/1e6])
+% xlabel('real k in rad/mm'), ylabel('imag k in rad/mm'), zlabel('f in MHz')
