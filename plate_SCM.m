@@ -22,7 +22,7 @@ c0 = c(1,2,1,2); rho0 = rho; fh0 = sqrt(c0/rho0);  % normalization parameters
 rhon = rho/rho0; cn = c/c0; % normalize
 
 % relevant material matrices: 
-udof = 1:3; % Lamb [1:2]; SH [3]; coupled [1:3];
+udof = 1:2; % Lamb [1:2]; SH [3]; coupled [1:3];
 cxx = squeeze(cn(1,udof,udof,1));
 cxy = squeeze(cn(1,udof,udof,2)); 
 cyx = squeeze(cn(2,udof,udof,1));
@@ -50,6 +50,7 @@ whn = nan(length(kh), size(M, 2)); tic
 for ii = 1:length(kh)
     kh0 = kh(ii);
     [wh2] = polyeig((1i*kh0)^2*L2 + (1i*kh0)*L1 + L0, M); 
+    % wh2 = eig(-(1i*kh0)^2*L2 - (1i*kh0)*L1 - L0, M, "vector"); % alternative 
     whn(ii,:) = sort(sqrt(wh2));
 end
 fh = real(whn/2/pi*fh0); fh(fh == 0) = nan;
@@ -57,30 +58,32 @@ chron = toc; fprintf('nF: %d, nK: %d, elapsed time: %g, time per point: %g. ms\n
 
 % plot wavenumbers:
 kkh = kh.*ones(size(fh)); % expand to same size as fh
-figure, plot(kkh/h/1e3, fh/h/1e6, 'k-');
+figure;
+plot(kkh/h/1e3, fh/h/1e6, 'k-');
 xlim([0, 12]), ylim([0, 6]),
 xlabel('k in rad/mm'), ylabel('f in MHz'),
 
 
 %% solve for complex wavenumbers:
-fh = linspace(1e-2, 6, 300).'*1e6*h; % frequency*thickness
-kh = nan(length(fh), size(M, 2)*2); tic
+fh = linspace(1e-2, 6, 300)*1e6*h; % frequency*thickness
+kh = nan(size(M, 2)*2,length(fh)); tic
 for ii = 1:length(fh)
     whn = 2*pi*fh(ii)/fh0; % current frequency-thickness (normalized)
     [un, khi] = polyeig(L0 + whn^2*M, L1, L2); 
-    kh(ii, :) = -1i*khi;
+    kh(:,ii) = -1i*khi;
 end
+kh = sort(kh,1); kh = kh(1:round(1.6*N),:); % only smallest magnitude are good approximations
 chron = toc; fprintf('nF: %d, nK: %d, elapsed time: %g, time per point: %g ms\n', size(kh, 1), size(kh, 2), chron, chron/length(kh(:))*1e3);
 
 % plot wave numbers:
-kh = sort(kh, 2); kh = kh(:, 1:round(1.6*N)); % only smallest magnitude
 ffh = fh.*ones(size(kh)); % expand to same size as kh
-figure, scatter(real(kh(:))/h/1e3, ffh(:)/h/1e6, 8, abs(imag(kh(:))), 'filled'), 
-caxis([0, 0.12]), xlim([0, 12]), ylim([0, fh(end)/h/1e6])
-xlabel('k in rad/mm'), ylabel('f in MHz')
+figure; 
+plot3(real(kh(:))/h/1e3, imag(kh(:))/h/1e3, ffh(:)/h/1e6, 'k.');
+xlim([-1, 1]*12), ylim([-1 1]*12), zlim([0, fh(end)/h/1e6])
+xlabel('Re k'), ylabel('Im k'), zlabel('f in MHz')
 
-%% plot 3d: 
-% figure; 
-% plot3(real(kh(:))/h/1e3, imag(kh(:))/h/1e3, ffh(:)/h/1e6, 'k.');
-% xlim([-1, 1]*12), ylim([-1 1]*12), zlim([0, fh(end)/h/1e6])
-% xlabel('real k in rad/mm'), ylabel('imag k in rad/mm'), zlabel('f in MHz')
+
+%% plot imaginary part as color code: 
+% figure, scatter(real(kh(:))/h/1e3, ffh(:)/h/1e6, 8, abs(imag(kh(:))), 'filled'), 
+% caxis([0, 0.12]), xlim([0, 12]), ylim([0, fh(end)/h/1e6])
+% xlabel('k in rad/mm'), ylabel('f in MHz')
