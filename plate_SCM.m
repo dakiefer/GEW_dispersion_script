@@ -7,9 +7,7 @@
 % metering", ser. FAU Forschungen, Reihe B, Medizin, Naturwissenschaft, Technik, 
 % vol. 42. Erlangen: FAU University Press, 2022, doi: 10.25593/978-3-96147-550-6
 % 
-% 2022 - Daniel A. Kiefer
-% Institut Langevin, ESPCI Paris, France
-%
+% 2022-2024 - Daniel A. Kiefer, Institut Langevin, ESPCI Paris, France
 
 h = 1e-3;   % thickness in m
 N = 15;     % discretization: polynomial order of interpolants
@@ -43,6 +41,10 @@ B1 = kron(cyx, Id([1, N], :)); B0 = kron(cyy, D1([1, N], :));
 % incorporate BCs:
 dofBC = [(0:length(udof)-1)*N+1; (1:length(udof))*N]; % [1, N, N+1, 2*N, 2*N+1, 3*N];
 L2(dofBC, :) = 0; L1(dofBC, :) = B1; L0(dofBC, :) = B0; M(dofBC, :) = 0;
+
+% nfix = N+1; fix the bottom uy displacement component (symmetric waves)
+% L2(nfix,:) = []; L1(nfix,:) = []; L0(nfix,:) = []; M(nfix,:) = []; 
+% L2(:,nfix) = []; L1(:,nfix) = []; L0(:,nfix) = []; M(:,nfix) = [];
 
 %% solve for real frequencies:
 kh = linspace(1e-2, 15, 100).'; % wavenumber*thickness 
